@@ -1,0 +1,7 @@
+checks:
+  clang-analyzer-*,
+  modernize-*,
+  -modernize-use-trailing-return-type,
+  performance-Ü,
+  -performance-no-int-to-ptr,
+  concurrency-*

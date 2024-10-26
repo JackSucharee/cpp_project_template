@@ -1,0 +1,33 @@
+{
+    "cmake.sourceDirectory": "/home/jacksucharee/Projects/cpp/ProjectTemplate/cmake",
+    "cmake.useCMakePresets": "always",
+    "files.associations": {
+        "array": "cpp"
+    },
+    "cmake.options.statusBarVisibility": "compact",
+    "cmake.options.advanced": {
+        "buildPreset": {
+            "statusBarVisibility": "inherit",
+            "inheritDefault": "visible"
+        },
+        "buildTarget": {
+            "statusBarVisibility": "inherit",
+            "inheritDefault": "visible"
+        },
+        "build": {
+            "statusBarVisibility": "inherit",
+            "inheritDefault": "visible"
+        },
+        "launch": {
+            "statusBarVisibility": "inherit",
+            "inheritDefault": "visible"
+        },
+        "debug": {
+            "statusBarVisibility": "inherit",
+            "inheritDefault": "visible"
+        }
+    },
+    "clangd.arguments": [
+        "--enable-config"
+    ]
+}

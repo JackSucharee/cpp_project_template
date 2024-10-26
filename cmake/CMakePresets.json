@@ -1,0 +1,255 @@
+{
+    "version": 9,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 30,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "base-configure",
+            "description": "Base configuration",
+            "binaryDir": "${sourceParentDir}/build/${presetName}/.cmake",
+            "installDir": "${sourceParentDir}/install/${presetName}",
+            "environment": {
+                "CXX_WARNINGS": "-Wall -Wpedantic -Wextra -Werror"
+            },
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_CXX_FLAGS": "$env{CXX_WARNINGS} $env{CXX_CLANG_FLAGS} $env{CXX_GCC_FLAGS} $env{CXX_SANITIZER}"
+            },
+            "hidden": true
+        },
+        {
+            "name": "ninja-clang",
+            "displayName": "Ninja Clang",
+            "description": "Ninja Clang configuration",
+            "inherits": [
+                "base-configure"
+            ],
+            "generator": "Ninja Multi-Config",
+            "environment": {
+                "CXX_CLANG_FLAGS": "-stdlib=libc++"
+            },
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "clang",
+                "CMAKE_CXX_COMPILER": "clang++",
+                "CMAKE_EXE_LINKER_FLAGS": "-stdlib=libc++",
+                "CMAKE_SHARED_LINKER_FLAGS": "-stdlib=libc++",
+                "CMAKE_LINKER_TYPE": "MOLD"
+            }
+        },
+        {
+            "name": "ninja-gcc",
+            "displayName": "Ninja GCC",
+            "description": "Ninja GCC configuration",
+            "inherits": [
+                "base-configure"
+            ],
+            "generator": "Ninja Multi-Config",
+            "environment": {
+                "CXX_GCC_FLAGS": ""
+            },
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++",
+                "CMAKE_LINKER_TYPE": "MOLD"
+            }
+        },
+        {
+            "name": "base-asan-ubsan-lsan-isan",
+            "environment": {
+                "CXX_SANITIZER": "-fsanitize=address,undefined,leak,integer -fno-omit-frame-pointer"
+            },
+            "hidden": true
+        },
+        {
+            "name": "base-msan",
+            "environment": {
+                "CXX_SANITIZER": "-fsanitize=memory -fno-omit-frame-pointer"
+            },
+            "hidden": true
+        },
+        {
+            "name": "base-tsan",
+            "environment": {
+                "CXX_SANITIZER": "-fsanitize=thread -fno-omit-frame-pointer"
+            },
+            "hidden": true
+        },
+        {
+            "name": "ninja-clang-asan-ubsan-lsan-isan",
+            "displayName": "Ninja Clang ASan UBSan LSan ISan",
+            "inherits": [
+                "ninja-clang",
+                "base-asan-ubsan-lsan-isan"
+            ]
+        },
+        {
+            "name": "ninja-clang-msan",
+            "displayName": "Ninja Clang MSan",
+            "inherits": [
+                "ninja-clang",
+                "base-msan"
+            ]
+        },
+        {
+            "name": "ninja-clang-tsan",
+            "displayName": "Ninja Clang TSan",
+            "inherits": [
+                "ninja-clang",
+                "base-tsan"
+            ]
+        },
+        {
+            "name": "ninja-gcc-asan-ubsan-lsan-isan",
+            "displayName": "Ninja GCC ASAN UBSAN LSAN ISAN",
+            "inherits": [
+                "ninja-gcc",
+                "base-asan-ubsan-lsan-isan"
+            ]
+        },
+        {
+            "name": "ninja-gcc-msan",
+            "displayName": "Ninja GCC MSAN",
+            "inherits": [
+                "ninja-gcc",
+                "base-msan"
+            ]
+        },
+        {
+            "name": "ninja-gcc-tsan",
+            "displayName": "Ninja GCC TSAN",
+            "inherits": [
+                "ninja-gcc",
+                "base-tsan"
+            ]
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "ninja-clang-debug",
+            "displayName": "Debug",
+            "configurePreset": "ninja-clang",
+            "configuration": "Debug",
+            "verbose": true,
+            "targets": [
+                "all",
+                "cpp_01",
+                "cpp_02",
+                "cpp_03",
+                "cpp_tests"
+            ]
+        },
+        {
+            "name": "ninja-clang-release",
+            "displayName": "Release",
+            "configurePreset": "ninja-clang",
+            "configuration": "Release",
+            "verbose": false
+        },
+        {
+            "name": "ninja-clang-relwithdebinfo",
+            "displayName": "RelDebWithInfo",
+            "configurePreset": "ninja-clang",
+            "configuration": "RelDebWithInfo",
+            "verbose": true
+        },
+        {
+            "name": "ninja-clang-debug-asan-ubsan-lsan-isan",
+            "displayName": "Debug ASAN UBSAN LSAN ISAN",
+            "configurePreset": "ninja-clang-asan-ubsan-lsan-isan",
+            "configuration": "Debug",
+            "verbose": true
+        },
+        {
+            "name": "ninja-clang-debug-msan",
+            "displayName": "Debug MSAN",
+            "configurePreset": "ninja-clang-msan",
+            "configuration": "Debug",
+            "verbose": true
+        },
+        {
+            "name": "ninja-clang-debug-tsan",
+            "displayName": "Debug TSAN",
+            "configurePreset": "ninja-clang-tsan",
+            "configuration": "Debug",
+            "verbose": true
+        },
+        {
+            "name": "ninja-gcc-debug",
+            "displayName": "Debug",
+            "configurePreset": "ninja-gcc",
+            "configuration": "Debug",
+            "verbose": true,
+            "targets": [
+                "all",
+                "cpp_01",
+                "cpp_02",
+                "cpp_03",
+                "cpp_tests"
+            ]
+        },
+        {
+            "name": "ninja-gcc-release",
+            "displayName": "Release",
+            "configurePreset": "ninja-gcc",
+            "configuration": "Release",
+            "verbose": false
+        },
+        {
+            "name": "ninja-gcc-reldebwithinfo",
+            "displayName": "RelDebWithInfo",
+            "configurePreset": "ninja-gcc",
+            "configuration": "RelDebWithInfo",
+            "verbose": true
+        },
+        {
+            "name": "ninja-gcc-debug-asan-ubsan-lsan-isan",
+            "displayName": "Debug ASAN UBSAN LSAN ISAN",
+            "configurePreset": "ninja-gcc-asan-ubsan-lsan-isan",
+            "configuration": "Debug",
+            "verbose": true
+        },
+        {
+            "name": "ninja-gcc-debug-msan",
+            "displayName": "Debug MSAN",
+            "configurePreset": "ninja-gcc-msan",
+            "configuration": "Debug",
+            "verbose": true
+        },
+        {
+            "name": "ninja-gcc-debug-tsan",
+            "displayName": "Debug TSAN",
+            "configurePreset": "ninja-gcc-tsan",
+            "configuration": "Debug",
+            "verbose": true
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "ninja-clang-test",
+            "displayName": "Test",
+            "configurePreset": "ninja-clang",
+            "output": {
+                "outputOnFailure": true
+            },
+            "execution": {
+                "noTestsAction": "error",
+                "stopOnFailure": true
+            }
+        },
+        {
+            "name": "ninja-gcc-test",
+            "displayName": "Test",
+            "configurePreset": "ninja-gcc",
+            "output": {
+                "outputOnFailure": true
+            },
+            "execution": {
+                "noTestsAction": "error",
+                "stopOnFailure": true
+            }
+        }
+    ]
+}
